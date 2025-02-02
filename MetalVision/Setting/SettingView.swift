@@ -11,7 +11,13 @@ struct SettingView: View {
     @AppStorage("isDarkMode") private var isDarkMode: Bool = false
     @State private var selectedAppIcon: String = "Default"
     @State private var showAlert: Bool = false
-    
+    @State private var isWeChatActive: Bool // 根据设备类型初始化
+
+    // 初始化方法
+    init() {
+        // 判断设备类型
+        _isWeChatActive = State(initialValue: UIDevice.current.userInterfaceIdiom == .pad)
+    }
     let appIcons = ["Default", "Halloween"]
     
     var body: some View {
@@ -41,12 +47,15 @@ struct SettingView: View {
                 }
                 
                 Section(header: Text("开发相关")) {
-                    NavigationLink {
-                        WeChat()
-                    } label: {
-                        Text("打赏开发者")
-                    }
-
+//                    NavigationLink {
+//                        WeChat()
+//                    } label: {
+//                        Text("打赏开发者")
+//                    }
+                    NavigationLink(destination: WeChat(), isActive: $isWeChatActive) {
+                                          Text("打赏开发者")
+                                      }
+                    
                     Text("版本: 1.0.0")
                     
                 }
